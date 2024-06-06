@@ -3,6 +3,7 @@ const colors = require('colors');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 //dotenv
 dotenv.config();
@@ -15,6 +16,8 @@ const app = express();
 //middlewares
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 //routes
 app.use('/api/v1/users', require('./routes/userRoutes'));
