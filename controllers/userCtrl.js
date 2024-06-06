@@ -1,5 +1,6 @@
 const userModel = require('../models/userModels')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 //REGISTER CONTROLLER
 const registerController = async (req, res) => {
@@ -7,7 +8,7 @@ const registerController = async (req, res) => {
         const existingUser = await userModel.findOne({email: req.body.email})
 
         if (existingUser) {
-            return res.status(400).json({message: 'User already exists'})
+            return res.status(200).send({message: 'User already exists', success: false})
         }
 
         const password = req.body.password
@@ -18,7 +19,7 @@ const registerController = async (req, res) => {
         const newUser = new userModel(req.body)
         await newUser.save()
 
-        res.status(201).json({message: 'User created successfully'})
+        res.status(200).json({message: 'User created successfully'})
     } catch (error) {
         console.log(error)
         res.status(500).json({message: 'Internal server error', error})
@@ -26,6 +27,27 @@ const registerController = async (req, res) => {
 }
 
 //LOGIN CONTROLLER
-const loginController = () => {}
+const loginController = async (req, res) => {
+    try {
+        const user = await userModel.findOne({
+            email: req.body.email
+        })
+
+        if(!user) {
+            return res.status(200).json({message: 'User not found', success: false})
+        }
+
+        const isMatch = await bcrypt.compare(req.body.password, user.password)
+        if(!isMatch) {
+            return res.status(200).json({message: 'Invalid credentials', success: false})
+        }
+
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'})
+        res.status(200).json({message: 'Login successful', success:true,  token})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: 'Internal server error', error})
+    }
+}
 
 module.exports = { loginController, registerController}
