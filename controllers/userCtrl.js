@@ -1,6 +1,7 @@
 const userModel = require("../models/userModels");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const EmployeeModel = require("../models/employeeModel");
 
 //REGISTER CONTROLLER
 const registerController = async (req, res) => {
@@ -78,4 +79,30 @@ const authController = async (req, res) => {
   }
 };
 
-module.exports = { loginController, registerController, authController };
+//APPLY CONTROLLER
+const applyController = async (req, res) => {
+  try {
+    const newEmployee = await EmployeeModel({ ...req.body, status: "pending" });
+    await newEmployee.save();
+    const adminUser = await userModel.findOne({ isAdmin: true });
+    const notifications = adminUser.notifications;
+    notifications.push({
+      type: "Apply as employee",
+      message: `New application from ${newEmployee.firstName} ${newEmployee.lastName}`,
+      data: {
+        employeId: newEmployee._id,
+        name: newEmployee.firstName + " " + newEmployee.lastName,
+        onclickPath: "/admin/employees",
+      }
+    });
+    await userModel.findOneAndUpdate(adminUser._id, {notifications});
+    res.status(200).send({ message: "Application sent successfully!", success: true });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ message: "Error applying for employee!", success: false, error });
+  }
+};
+
+module.exports = { loginController, registerController, applyController };

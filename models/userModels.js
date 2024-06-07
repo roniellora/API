@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  seenNotification: {
+  seenNotifications: {
     type: Array,
     default: [],
   },
