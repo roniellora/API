@@ -17,8 +17,8 @@ const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
+app.use(cors({ origin: ['http://localhost:5173', 'https://api-zeta-ruby.vercel.app/'] }));
 app.options('*', cors());
-app.use(cors({ origin: ['http://localhost:5173', 'https://duque-glam.vercel.app'] }));
 
 //routes
 app.use('/api/v1/users', require('./routes/userRoutes'));

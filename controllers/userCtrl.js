@@ -105,4 +105,4 @@ const applyController = async (req, res) => {
   }
 };
 
-module.exports = { loginController, registerController, applyController };
+module.exports = { loginController, registerController, authController, applyController };
