@@ -93,10 +93,12 @@ const applyController = async (req, res) => {
         employeId: newEmployee._id,
         name: newEmployee.firstName + " " + newEmployee.lastName,
         onclickPath: "/admin/employees",
-      }
+      },
     });
-    await userModel.findOneAndUpdate(adminUser._id, {notifications});
-    res.status(200).send({ message: "Application sent successfully!", success: true });
+    await userModel.findOneAndUpdate(adminUser._id, { notifications });
+    res
+      .status(200)
+      .send({ message: "Application sent successfully!", success: true });
   } catch (error) {
     console.log(error);
     res
@@ -105,4 +107,55 @@ const applyController = async (req, res) => {
   }
 };
 
-module.exports = { loginController, registerController, authController, applyController };
+const allNotificationsController = async (req, res) => {
+  try {
+    const user = await userModel.findOne({ _id: req.body.userId });
+    const seenNotifications = user.seenNotifications;
+    const notifications = user.notifications;
+
+    seenNotifications.push(...notifications);
+    user.notifications = [];
+    user.seenNotifications = notifications;
+
+    const updatedUser = await user.save();
+    res.status(200).send({
+      message: "Notifications marked as read!",
+      success: true,
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ message: "Error fetching notifications", success: false, error });
+  }
+};
+
+const deleteAllNotificationsController = async (req, res) => {
+  try {
+    const user = await userModel.findOne({ _id: req.body.userId });
+    user.notifications = [];
+    user.seenNotifications = [];
+    const updatedUser = await user.save();
+    updatedUser.password = undefined;
+    res.status(200).send({
+      message: "Notifications deleted successfully!",
+      success: true,
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ message: "Error deleting notifications", success: false, error });
+  }
+};
+
+module.exports = {
+  loginController,
+  registerController,
+  authController,
+  applyController,
+  allNotificationsController,
+  deleteAllNotificationsController,
+};

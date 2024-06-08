@@ -22,6 +22,8 @@ app.options('*', cors());
 
 //routes
 app.use('/api/v1/users', require('./routes/userRoutes'));
+app.use('/api/v1/admin', require('./routes/adminRoutes'));
+app.use('/api/v1/employee', require('./routes/EmployeeRoutes'));
 
 //port
 const PORT = process.env.PORT || 3000;
