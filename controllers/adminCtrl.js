@@ -14,6 +14,8 @@ const getAllUsersController = async (req, res) => {
       .send({ message: "Error Fetching Users!", success: false, error });
   }
 };
+
+
 const getAllEmployeesController = async (req, res) => {
   try {
     const employees = await employeeModel.find({});

@@ -17,13 +17,13 @@ const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
-app.use(cors({ origin: ['http://localhost:5173', 'https://api-zeta-ruby.vercel.app/'] }));
+app.use(cors({ origin: ['http://localhost:5173', 'https://api-lyart-gamma-50.vercel.app/'] }));
 app.options('*', cors());
 
 //routes
 app.use('/api/v1/users', require('./routes/userRoutes'));
 app.use('/api/v1/admin', require('./routes/adminRoutes'));
-app.use('/api/v1/employee', require('./routes/EmployeeRoutes'));
+app.use('/api/v1/employee', require('./routes/employeeRoutes'));
 
 //port
 const PORT = process.env.PORT || 3000;
