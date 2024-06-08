@@ -18,12 +18,16 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(cors({ origin: ['http://localhost:5173', 'https://api-lyart-gamma-50.vercel.app/'] }));
-app.options('*', cors());
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.sendStatus(200);
+});
 
 //routes
 app.use('/api/v1/users', require('./routes/userRoutes'));
 app.use('/api/v1/admin', require('./routes/adminRoutes'));
-app.use('/api/v1/employee', require('./routes/employeeRoutes'));
+app.use('/api/v1/employee', require('./routes/EmployeeRoutes'));
 
 //port
 const PORT = process.env.PORT || 3000;

@@ -151,6 +151,23 @@ const deleteAllNotificationsController = async (req, res) => {
   }
 };
 
+//GET ALL EMPLOYEES
+const getEmployeesController = async (req, res) => {
+  try {
+    const employees = await EmployeeModel.find({ status: "approved" });
+    res.status(200).send({
+      message: "Employees fetched succesfully!",
+      success: true,
+      data: employees,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ message: "Error fetching employees!", success: false, error });
+  }
+};
+
 module.exports = {
   loginController,
   registerController,
@@ -158,4 +175,5 @@ module.exports = {
   applyController,
   allNotificationsController,
   deleteAllNotificationsController,
+  getEmployeesController,
 };
