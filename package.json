@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client": "cross-env PORT=3000 npm start --prefix, /client",
+    "client": "cross-env PORT=3001 npm start --prefix, /client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],

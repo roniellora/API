@@ -16,7 +16,7 @@ const app = express();
 //middlewares
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(cors({ origin: ['http://localhost:5173', 'https://api-lyart-gamma-50.vercel.app/'] }));
+app.use(cors({ origin: ['http://localhost:5173', 'https://api-lyart-gamma-50.vercel.app'] }));
 app.options('*', cors());
 
 //routes

@@ -51,4 +51,29 @@ const updateProfileController = async (req, res) => {
   }
 };
 
-module.exports = { getEmployeeInfoController, updateProfileController };
+//GET SINGLE DOCTOR
+const getEmployeeByIdController = async (req, res) => {
+  try {
+    const employee = await employeeModels.findOne({ _id: req.body.employeeId });
+    if (!employee) {
+      return res
+        .status(404)
+        .send({ message: "Employee not found", success: false });
+    } else {
+      res.status(200).send({
+        success: true,
+        message: "Employee fetched",
+        data: employee,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error fetching employee!",
+      success: false,
+      error,
+    });
+  }
+};
+
+module.exports = { getEmployeeInfoController, updateProfileController, getEmployeeByIdController };
