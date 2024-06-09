@@ -195,6 +195,37 @@ const bookAppointmentController = async (req, res) => {
   }
 };
 
+//CHECK AVAILABILITY
+const checkAvailabilityController = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.find({
+      employeeId: req.body.employeeId,
+      date: req.body.date,
+    });
+
+    if (appointments.length > 0) {
+      res.status(200).send({
+        message: "Employee not available at this time!",
+        success: false,
+      });
+    } else {
+      res.status(200).send({
+        message: "Employee is available at this time!",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({
+        message: "Error checking employee availability!",
+        success: false,
+        error,
+      });
+  }
+};
+
 module.exports = {
   loginController,
   registerController,
@@ -204,4 +235,5 @@ module.exports = {
   deleteAllNotificationsController,
   getEmployeesController,
   bookAppointmentController,
+  checkAvailabilityController
 };

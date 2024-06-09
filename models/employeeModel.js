@@ -36,6 +36,10 @@ const employeeSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Fee is required!']
     },
+    timings:{
+        type: Object,
+        required: [true, 'Timings are required!']
+    },
     status: {
         type: String,
         default: 'pending'

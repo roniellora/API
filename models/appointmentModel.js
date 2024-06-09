@@ -26,6 +26,10 @@ const appointmentSchema = new mongoose.Schema({
         required: true,
         default: 'pending'
     },  
+    timings: {
+        type: String,
+        required: true
+    }
 }, { timestamps: true });
 
 const appointmentModel = mongoose.model('appointments', appointmentSchema);
