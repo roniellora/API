@@ -30,7 +30,5 @@ router.get('/getEmployees', authMiddleware, getEmployeesController)
 //BOOK APPOINTMENT
 router.post('/book-appointment', authMiddleware, bookAppointmentController)
 
-//CHECK AVAILABILITY
-router.post('/check-availability', authMiddleware, checkAvailabilityController)
 
 module.exports = router;
