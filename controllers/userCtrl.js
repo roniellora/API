@@ -180,7 +180,7 @@ const bookAppointmentController = async (req, res) => {
     user.notifications.push({
       type: "Appointment",
       message: `New appointment request from ${req.body.userInfo.name}`,
-        onclickPath: "/user/appointments",
+      onclickPath: "/user/appointments",
     });
     await user.save();
     res.status(200).send({
@@ -195,6 +195,27 @@ const bookAppointmentController = async (req, res) => {
   }
 };
 
+//APPOINTMENT LIST
+const appointmentListController = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.findMany({
+      userId: req.body.userId,
+    });
+    res.status(200).send({
+      success: true,
+      message: "Users Appointments Fetch SUccessfully",
+      data: appointments,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error In User Appointments",
+    });
+  }
+};
+
 module.exports = {
   loginController,
   registerController,
@@ -204,4 +225,5 @@ module.exports = {
   deleteAllNotificationsController,
   getEmployeesController,
   bookAppointmentController,
+  appointmentListController,
 };

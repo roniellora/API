@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({
     userId: {
-        type: String
+        type: String,
     },
     firstName: {
         type: String,
